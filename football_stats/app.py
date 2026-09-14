@@ -166,3 +166,201 @@ def country(country_id):
         favorite_competitions=favorite_competitions,
         favorite_teams=favorite_teams
     )
+
+
+@app.route("/competition/champions-league")
+def competition():
+    competition = {
+        "id": 1,
+        "name": "Champions League",
+        "category": "hybrid",
+        "stages": [
+            {
+                "name": "Qualifying",
+                "structure": "knockout",
+                "teams": [
+                    "Team A",
+                    "Team B",
+                    "Team C",
+                    "Team D"
+                ],
+                "rounds": [
+                    {
+                        "name": "First Qualifying Round",
+                        "fixtures": [
+                            {
+                                "home": "Team A",
+                                "away": "Team B"
+                            },
+                            {
+                                "home": "Team C",
+                                "away": "Team D"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Second Qualifying Round",
+                        "fixtures": [
+                            {
+                                "home": "Winner of First Qualifying Round Match 1",
+                                "away": "Winner of First Qualifying Round Match 2"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "League Phase",
+                "structure": "league",
+                "standings": [
+                    "Team A",
+                    "Team B",
+                    "Team C",
+                    "Team D"
+                ],
+                "fixtures": [
+                    {
+                        "home": "Team A",
+                        "away": "Team C"
+                    },
+                    {
+                        "home": "Team B",
+                        "away": "Team D"
+                    }
+                ]
+            },
+            {
+                "name": "Knockout Phase",
+                "structure": "knockout",
+                "teams": [
+                    "Team A",
+                    "Team B"
+                ],
+                "rounds": [
+                    {
+                        "name": "Round of 16",
+                        "fixtures": [
+                            {
+                                "home": "Team A",
+                                "away": "Team B"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Quarter-finals",
+                        "fixtures": [
+                            {
+                                "home": "Winner of Round of 16 Match 1",
+                                "away": "Winner of Round of 16 Match 2"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Semi-finals",
+                        "fixtures": [
+                            {
+                                "home": "Winner of Quarter-finals Match 1",
+                                "away": "Winner of Quarter-finals Match 2"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Final",
+                        "fixtures": [
+                            {
+                                "home": "Winner of Semi-finals Match 1",
+                                "away": "Winner of Semi-finals Match 2"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    favorite_countries = ["Romania", "Italy"]
+    favorite_competitions = ["Champions League", "Serie A"]
+    favorite_teams = ["FCSB", "AC Milan"]
+
+    return render_template(
+        "competition.html",
+        competition=competition,
+        favorite_countries=favorite_countries,
+        favorite_competitions=favorite_competitions,
+        favorite_teams=favorite_teams
+    )
+
+
+@app.route("/competition/liga-i")
+def liga_i():
+    competition = {
+        "id": 2,
+        "name": "Liga I",
+        "category": "league",
+        "stages": [
+            {
+                "name": "Regular Season",
+                "structure": "league",
+                "standings": [
+                    "FCSB",
+                    "CFR Cluj",
+                    "Rapid București",
+                    "Universitatea Craiova"
+                ],
+                "fixtures": [
+                    {
+                        "home": "FCSB",
+                        "away": "CFR Cluj"
+                    },
+                    {
+                        "home": "Rapid București",
+                        "away": "Universitatea Craiova"
+                    }
+                ]
+            },
+            {
+                "name": "Play-Off / Play-Out",
+                "structure": "league",
+                "groups": [
+                    {
+                        "name": "Play-Off",
+                        "standings": [
+                            "FCSB",
+                            "CFR Cluj"
+                        ],
+                        "fixtures": [
+                            {
+                                "home": "FCSB",
+                                "away": "CFR Cluj"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Play-Out",
+                        "standings": [
+                            "Rapid București",
+                            "Universitatea Craiova"
+                        ],
+                        "fixtures": [
+                            {
+                                "home": "Rapid București",
+                                "away": "Universitatea Craiova"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
+    favorite_countries = ["Romania", "Italy"]
+    favorite_competitions = ["Champions League", "Serie A"]
+    favorite_teams = ["FCSB", "AC Milan"]
+
+    return render_template(
+        "competition.html",
+        competition=competition,
+        favorite_countries=favorite_countries,
+        favorite_competitions=favorite_competitions,
+        favorite_teams=favorite_teams
+    )

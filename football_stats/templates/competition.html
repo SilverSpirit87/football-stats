@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Football Stats | {{ competition.name }}{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/competition.js') }}" defer></script>
+{% endblock %}
+
+{% block heading %}{{ competition.name }}{% endblock %}
+
+{% macro render_league_content(data) %}
+
+    <div class="content-tabs">
+        <button
+            type="button"
+            class="content-tab"
+            data-content="standings"
+        >
+            Standings
+        </button>
+
+        <button
+            type="button"
+            class="content-tab"
+            data-content="fixtures"
+        >
+            Fixtures
+        </button>
+    </div>
+
+    <section class="stage-content standings">
+        <h3>Standings</h3>
+
+        <ol>
+            {% for team in data.standings %}
+                <li>{{ team }}</li>
+            {% endfor %}
+        </ol>
+    </section>
+
+    <section class="stage-content fixtures" hidden>
+        <h3>Fixtures</h3>
+
+        <ul>
+            {% for fixture in data.fixtures %}
+                <li>{{ fixture.home }} vs {{ fixture.away }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+{% endmacro %}
+
+{% block content %}
+
+    {% if competition.stages|length > 1 %}
+        <div class="stage-tabs">
+            {% for stage in competition.stages %}
+                <button
+                    type="button"
+                    class="stage-tab"
+                    data-stage="{{ loop.index0 }}"
+                >
+                    {{ stage.name }}
+                </button>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="stages">
+
+        {% for stage in competition.stages %}
+            <section
+                class="stage"
+                data-stage="{{ loop.index0 }}"
+                {% if not loop.first %}hidden{% endif %}
+            >
+
+                {% if competition.stages|length == 1 %}
+                    <h2>{{ stage.name }}</h2>
+                {% endif %}
+
+                {% if stage.structure == "league" %}
+
+                    {% if stage.groups %}
+
+                        <div class="group-tabs">
+                            {% for group in stage.groups %}
+                                <button
+                                    type="button"
+                                    class="group-tab"
+                                    data-group="{{ loop.index0 }}"
+                                >
+                                    {{ group.name }}
+                                </button>
+                            {% endfor %}
+                        </div>
+
+                        <div class="groups">
+                            {% for group in stage.groups %}
+                                <section
+                                    class="group"
+                                    data-group="{{ loop.index0 }}"
+                                    {% if not loop.first %}hidden{% endif %}
+                                >
+                                    {{ render_league_content(group) }}
+                                </section>
+                            {% endfor %}
+                        </div>
+
+                    {% else %}
+
+                        {{ render_league_content(stage) }}
+
+                    {% endif %}
+
+                {% elif stage.structure == "knockout" %}
+
+                    <div class="content-tabs">
+                        <button
+                            type="button"
+                            class="content-tab"
+                            data-content="teams"
+                        >
+                            Teams
+                        </button>
+
+                        <button
+                            type="button"
+                            class="content-tab"
+                            data-content="rounds"
+                        >
+                            Rounds
+                        </button>
+                    </div>
+
+                    <section class="stage-content teams">
+                        <h3>Teams</h3>
+
+                        <ul>
+                            {% for team in stage.teams %}
+                                <li>{{ team }}</li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+
+                    <section class="stage-content rounds" hidden>
+                        <div class="round-tabs">
+                            {% for round in stage.rounds %}
+                                <button
+                                    type="button"
+                                    class="round-tab"
+                                    data-round="{{ loop.index0 }}"
+                                >
+                                    {{ round.name }}
+                                </button>
+                            {% endfor %}
+                        </div>
+
+                        <div class="rounds-content">
+                            {% for round in stage.rounds %}
+                                <section
+                                    class="round"
+                                    data-round="{{ loop.index0 }}"
+                                    {% if not loop.first %}hidden{% endif %}
+                                >
+                                    <h3>{{ round.name }}</h3>
+
+                                    <ul>
+                                        {% for fixture in round.fixtures %}
+                                            <li>{{ fixture.home }} vs {{ fixture.away }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </section>
+                            {% endfor %}
+                        </div>
+                    </section>
+
+                {% endif %}
+
+            </section>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
