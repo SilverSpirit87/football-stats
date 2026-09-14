@@ -1,26 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Football Stats | Home{% endblock %}
+{% block title %}Football Stats | {{country.name}} {% endblock %}
 
 {% block scripts %}
-    <script src="{{ url_for('static', filename='js/home.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/country.js') }}" defer></script>
 {% endblock %}
 
-{% block heading %}Home{% endblock %}
-
-{% block favorites_heading %}
-    <h2>Favorites</h2>
-{% endblock %}
-
-{% block favorites_state %}{% endblock %}
+{% block heading %}{{country.name}}{% endblock %}
 
 {% block content %}
     <div class="search-options">
         <div class="checkbox-panel">
-            <div class="checkbox-options">
-                <input type="checkbox" id="country">
-                <label for="country">Country</label>
-            </div>
             <div class="checkbox-options">
                 <input type="checkbox" id="competition">
                 <label for="competition">Competition</label>
@@ -40,31 +30,24 @@
     </div>
     <div class="search-results">
         <div class="results-tabs">
-            <button type="button" id="results-country-tab">Countries</button>
             <button type="button" id="results-competition-tab">Competitions</button>
             <button type="button" id="results-team-tab">Teams</button>
         </div>
-        <section class="countries">
-            <h3>Countries</h3>
-            <ul class="results-countries">
-                {% for country in countries %}
-                    <li>{{country}}</li>
-                {% endfor %}
-            </ul>
-        </section>
-        <section class="competitions" hidden>
+
+        <section class="competitions">
             <h3>Competitions</h3>
             <ul class="results-competitions">
                 {% for competition in competitions %}
-                    <li>{{competition}}</li>
+                    <li>{{ competition }}</li>
                 {% endfor %}
             </ul>
         </section>
+
         <section class="teams" hidden>
             <h3>Teams</h3>
             <ul class="results-teams">
                 {% for team in teams %}
-                    <li>{{team}}</li>
+                    <li>{{ team }}</li>
                 {% endfor %}
             </ul>
         </section>

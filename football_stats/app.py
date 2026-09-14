@@ -132,3 +132,37 @@ def home():
         favorite_competitions=favorite_competitions,
         favorite_teams=favorite_teams
     )
+
+
+@app.route("/country/<int:country_id>")
+def country(country_id):
+    country = {
+        "id": country_id,
+        "name": "Romania"
+    }
+
+    competitions = [
+        "Liga I",
+        "Liga II",
+        "Cupa României"
+    ]
+
+    teams = [
+        "FCSB",
+        "Rapid București",
+        "CFR Cluj"
+    ]
+
+    favorite_countries = ["Romania", "Italy"]
+    favorite_competitions = ["Liga I", "Serie A"]
+    favorite_teams = ["FCSB", "AC Milan"]
+
+    return render_template(
+        "country.html",
+        country=country,
+        competitions=competitions,
+        teams=teams,
+        favorite_countries=favorite_countries,
+        favorite_competitions=favorite_competitions,
+        favorite_teams=favorite_teams
+    )
