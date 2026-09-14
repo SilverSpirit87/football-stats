@@ -7,6 +7,50 @@
     <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
 </head>
 <body>
-    {% block body %}{% endblock %}
+    <header>
+        {% block home_button %}
+            <a href="{{ url_for('home') }}" aria-label="Home">Home</a>
+        {% endblock %}
+
+        <h1>{% block heading %}{% endblock %}</h1>
+
+        {% block update_button %}
+            <button type="button" id="update-button" aria-label="Update">Update</button>
+        {% endblock %}
+    </header>
+
+    <aside>
+        {% block favorites_heading %}
+            <h2>
+                <button type="button" id="favorites-toggle">Favorites</button>
+            </h2>
+        {% endblock %}
+        <div class="favorites-content" {% block favorites_state %}hidden{% endblock %}>
+            <div class="favorites-tabs">
+                <button type="button" id="country-tab">Countries</button>
+                <button type="button" id="competition-tab">Competitions</button>
+                <button type="button" id="team-tab">Teams</button>
+            </div>
+            <ul class="favorites-list countries" hidden>
+                {% for country in favorite_countries %}
+                    <li>{{country}}</li>
+                {% endfor %}
+            </ul>
+            <ul class="favorites-list competitions">
+                {% for competition in favorite_competitions %}
+                    <li>{{competition}}</li>
+                {% endfor %}
+            </ul>
+            <ul class="favorites-list teams" hidden>
+                {% for team in favorite_teams %}
+                    <li>{{team}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>
