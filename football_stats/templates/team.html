@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}Football Stats | {{ team.name }}{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/team.js') }}" defer></script>
+{% endblock %}
+
+{% block heading %}{{ team.name }}{% endblock %}
+
+
+{% macro render_statistics(statistics) %}
+
+    <div class="statistics">
+
+        <div class="location-tabs">
+            <button
+                type="button"
+                class="location-tab"
+                data-location="overall"
+            >
+                Overall
+            </button>
+
+            <button
+                type="button"
+                class="location-tab"
+                data-location="home"
+            >
+                Home
+            </button>
+
+            <button
+                type="button"
+                class="location-tab"
+                data-location="away"
+            >
+                Away
+            </button>
+        </div>
+
+        <div class="direction-tabs">
+            <button
+                type="button"
+                class="direction-tab"
+                data-direction="for"
+            >
+                For
+            </button>
+
+            <button
+                type="button"
+                class="direction-tab"
+                data-direction="against"
+            >
+                Against
+            </button>
+        </div>
+
+        <div class="statistics-view-tabs">
+            <button
+                type="button"
+                class="statistics-view-tab"
+                data-view="distribution"
+            >
+                Performance Distribution
+            </button>
+
+            <button
+                type="button"
+                class="statistics-view-tab"
+                data-view="recent"
+            >
+                Recent Form
+            </button>
+        </div>
+
+        <div class="statistics-panels">
+
+            {% for location_name, location_data in statistics.items() %}
+
+                {% for direction_name, rows in location_data.items() %}
+
+                    <section
+                        class="statistics-panel"
+                        data-location="{{ location_name }}"
+                        data-direction="{{ direction_name }}"
+                        {% if not (
+                            location_name == "overall"
+                            and direction_name == "for"
+                        ) %}
+                            hidden
+                        {% endif %}
+                    >
+
+                        <section
+                            class="statistics-view performance-distribution"
+                            data-view="distribution"
+                        >
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Criteria</th>
+                                        <th>Low 5 avg.</th>
+                                        <th>Overall avg.</th>
+                                        <th>High 5 avg.</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for row in rows %}
+                                        <tr>
+                                            <td>{{ row.criteria }}</td>
+                                            <td>{{ row.low_5 }}</td>
+                                            <td>{{ row.average }}</td>
+                                            <td>{{ row.high_5 }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section
+                            class="statistics-view recent-form"
+                            data-view="recent"
+                            hidden
+                        >
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Criteria</th>
+                                        <th>Overall avg.</th>
+                                        <th>Last 7</th>
+                                        <th>Last 5</th>
+                                        <th>Last 3</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for row in rows %}
+                                        <tr>
+                                            <td>{{ row.criteria }}</td>
+                                            <td>{{ row.average }}</td>
+                                            <td>{{ row.last_7 }}</td>
+                                            <td>{{ row.last_5 }}</td>
+                                            <td>{{ row.last_3 }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </section>
+
+                    </section>
+
+                {% endfor %}
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endmacro %}
+
+
+{% block content %}
+
+    <div class="competition-tabs">
+
+        <button
+            type="button"
+            class="competition-tab"
+            data-competition="all"
+        >
+            All Competitions
+        </button>
+
+        {% for competition in team.competitions %}
+            <button
+                type="button"
+                class="competition-tab"
+                data-competition="{{ loop.index0 }}"
+            >
+                {{ competition.name }}
+            </button>
+        {% endfor %}
+
+    </div>
+
+
+    <section
+        class="competition-panel"
+        data-competition="all"
+    >
+
+        <div class="competition-filters">
+
+            {% for competition in team.competitions %}
+                <div class="competition-filter">
+                    <input
+                        type="checkbox"
+                        class="competition-checkbox"
+                        id="competition-{{ loop.index0 }}"
+                        checked
+                    >
+
+                    <label for="competition-{{ loop.index0 }}">
+                        {{ competition.name }}
+                    </label>
+                </div>
+            {% endfor %}
+
+            <button type="button" id="select-all-competitions">
+                Select All
+            </button>
+
+            <button type="button" id="deselect-all-competitions">
+                Deselect All
+            </button>
+
+        </div>
+
+        {{ render_statistics(team.all_competitions.statistics) }}
+
+    </section>
+
+
+    {% for competition in team.competitions %}
+
+        <section
+            class="competition-panel"
+            data-competition="{{ loop.index0 }}"
+            hidden
+        >
+
+            {% if competition.stages|length > 1 %}
+
+                <div class="stage-tabs">
+
+                    {% for stage in competition.stages %}
+                        <button
+                            type="button"
+                            class="stage-tab"
+                            data-stage="{{ loop.index0 }}"
+                        >
+                            {{ stage.name }}
+                        </button>
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="stage-panels">
+
+                {% for stage in competition.stages %}
+
+                    <section
+                        class="stage-panel"
+                        data-stage="{{ loop.index0 }}"
+                        {% if not loop.first %}hidden{% endif %}
+                    >
+
+                        {% if competition.stages|length == 1 %}
+                            <h2>{{ stage.name }}</h2>
+                        {% endif %}
+
+                        {{ render_statistics(stage.statistics) }}
+
+                    </section>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    {% endfor %}
+
+{% endblock %}

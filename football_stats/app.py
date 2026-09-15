@@ -364,3 +364,187 @@ def liga_i():
         favorite_competitions=favorite_competitions,
         favorite_teams=favorite_teams
     )
+
+def mock_statistics():
+    return {
+        "overall": {
+            "for": [
+                {
+                    "criteria": "Goals",
+                    "low_5": 0.8,
+                    "average": 1.9,
+                    "high_5": 3.2,
+                    "last_7": 2.0,
+                    "last_5": 2.2,
+                    "last_3": 2.7
+                },
+                {
+                    "criteria": "Shots",
+                    "low_5": 7.4,
+                    "average": 12.1,
+                    "high_5": 17.2,
+                    "last_7": 12.8,
+                    "last_5": 13.4,
+                    "last_3": 14.0
+                },
+                {
+                    "criteria": "Corners",
+                    "low_5": 2.6,
+                    "average": 5.1,
+                    "high_5": 7.8,
+                    "last_7": 5.4,
+                    "last_5": 5.8,
+                    "last_3": 6.3
+                }
+            ],
+
+            "against": [
+                {
+                    "criteria": "Goals",
+                    "low_5": 0.2,
+                    "average": 1.1,
+                    "high_5": 2.4,
+                    "last_7": 1.0,
+                    "last_5": 0.8,
+                    "last_3": 0.7
+                },
+                {
+                    "criteria": "Shots",
+                    "low_5": 5.8,
+                    "average": 9.7,
+                    "high_5": 14.1,
+                    "last_7": 9.2,
+                    "last_5": 8.8,
+                    "last_3": 8.3
+                },
+                {
+                    "criteria": "Corners",
+                    "low_5": 1.8,
+                    "average": 4.2,
+                    "high_5": 6.6,
+                    "last_7": 4.0,
+                    "last_5": 3.8,
+                    "last_3": 3.7
+                }
+            ]
+        },
+
+        "home": {
+            "for": [
+                {
+                    "criteria": "Goals",
+                    "low_5": 1.0,
+                    "average": 2.2,
+                    "high_5": 3.6,
+                    "last_7": 2.3,
+                    "last_5": 2.4,
+                    "last_3": 3.0
+                }
+            ],
+            "against": [
+                {
+                    "criteria": "Goals",
+                    "low_5": 0.0,
+                    "average": 0.8,
+                    "high_5": 1.8,
+                    "last_7": 0.7,
+                    "last_5": 0.6,
+                    "last_3": 0.3
+                }
+            ]
+        },
+
+        "away": {
+            "for": [
+                {
+                    "criteria": "Goals",
+                    "low_5": 0.6,
+                    "average": 1.6,
+                    "high_5": 2.8,
+                    "last_7": 1.7,
+                    "last_5": 1.8,
+                    "last_3": 2.0
+                }
+            ],
+            "against": [
+                {
+                    "criteria": "Goals",
+                    "low_5": 0.4,
+                    "average": 1.4,
+                    "high_5": 2.8,
+                    "last_7": 1.3,
+                    "last_5": 1.2,
+                    "last_3": 1.0
+                }
+            ]
+        }
+    }
+
+@app.route("/team/fcsb")
+def team():
+    team = {
+        "id": 1,
+        "name": "FCSB",
+
+        "all_competitions": {
+            "statistics": mock_statistics()
+        },
+
+        "competitions": [
+            {
+                "name": "Liga I",
+                "stages": [
+                    {
+                        "name": "Regular Season",
+                        "statistics": mock_statistics()
+                    },
+                    {
+                        "name": "Play-Off",
+                        "statistics": mock_statistics()
+                    }
+                ]
+            },
+            {
+                "name": "Champions League",
+                "stages": [
+                    {
+                        "name": "League Phase",
+                        "statistics": mock_statistics()
+                    },
+                    {
+                        "name": "Knockout Phase",
+                        "statistics": mock_statistics()
+                    }
+                ]
+            },
+            {
+                "name": "Cupa României",
+                "stages": [
+                    {
+                        "name": "Round of 32",
+                        "statistics": mock_statistics()
+                    },
+                    {
+                        "name": "Round of 16",
+                        "statistics": mock_statistics()
+                    },
+                    {
+                        "name": "Quarter-finals",
+                        "statistics": mock_statistics()
+                    }
+                ]
+            }
+        ]
+    }
+
+    favorite_countries = ["Romania", "Italy"]
+    favorite_competitions = ["Champions League", "Serie A"]
+    favorite_teams = ["FCSB", "AC Milan"]
+
+    return render_template(
+        "team.html",
+        team=team,
+        favorite_countries=favorite_countries,
+        favorite_competitions=favorite_competitions,
+        favorite_teams=favorite_teams
+    )
