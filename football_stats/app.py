@@ -138,7 +138,8 @@ def home():
 def country(country_id):
     country = {
         "id": country_id,
-        "name": "Romania"
+        "name": "Romania",
+        "flag": "https://apiv3.apifootball.com/badges/logo_country/44_england.png"
     }
 
     competitions = [
@@ -174,6 +175,7 @@ def competition():
         "id": 1,
         "name": "Champions League",
         "category": "hybrid",
+        "logo": "https://apiv3.apifootball.com/badges/logo_country/44_england.png",
         "stages": [
             {
                 "name": "Qualifying",
@@ -485,6 +487,7 @@ def team():
     team = {
         "id": 1,
         "name": "FCSB",
+        "logo": "https://apiv3.apifootball.com/badges/logo_country/44_england.png",
 
         "all_competitions": {
             "statistics": mock_statistics()
@@ -547,4 +550,112 @@ def team():
         favorite_countries=favorite_countries,
         favorite_competitions=favorite_competitions,
         favorite_teams=favorite_teams
+    )
+
+
+@app.route("/fixture/<int:fixture_id>")
+def fixture(fixture_id):
+    fixture = {
+        "id": fixture_id,
+        "status": "Scheduled",
+        "match_data_available": True,
+
+        "home_team": {
+            "name": "FCSB",
+            "logo": "https://apiv3.apifootball.com/badges/logo_country/44_england.png"
+        },
+
+        "away_team": {
+            "name": "AC Milan",
+            "logo": "https://apiv3.apifootball.com/badges/logo_country/6_spain.png"
+        },
+
+        "competition": {
+            "name": "Champions League"
+        },
+
+        "stage": {
+            "name": "League Phase"
+        },
+
+        "date": "2026-09-20",
+        "time": "21:00",
+
+        "pre_match": {
+            "role": [
+                {
+                    "name": "Goals",
+                    "home": {"value": 2.2, "evolution": "↗"},
+                    "away": {"value": 1.6, "evolution": "↗"}
+                },
+                {
+                    "name": "Shots",
+                    "home": {"value": 13.4, "evolution": "↑"},
+                    "away": {"value": 10.8, "evolution": "↘"}
+                },
+                {
+                    "name": "Corners",
+                    "home": {"value": 5.8, "evolution": "↗"},
+                    "away": {"value": 4.1, "evolution": "→"}
+                }
+            ],
+            "overall": [
+                {
+                    "name": "Goals",
+                    "home": {"value": 1.9, "evolution": "↗"},
+                    "away": {"value": 2.0, "evolution": "→"}
+                },
+                {
+                    "name": "Shots",
+                    "home": {"value": 12.1, "evolution": "↑"},
+                    "away": {"value": 12.7, "evolution": "↗"}
+                },
+                {
+                    "name": "Corners",
+                    "home": {"value": 5.1, "evolution": "↗"},
+                    "away": {"value": 4.9, "evolution": "→"}
+                }
+            ]
+        },
+
+        "match": [
+            {
+                "name": "Goals",
+                "home": {"value": 3, "evolution": "↑"},
+                "away": {"value": 1, "evolution": "↘"}
+            },
+            {
+                "name": "Shots",
+                "home": {"value": 16, "evolution": "↗"},
+                "away": {"value": 9, "evolution": "↓"}
+            },
+            {
+                "name": "Corners",
+                "home": {"value": 7, "evolution": "↗"},
+                "away": {"value": 3, "evolution": "↘"}
+            }
+        ],
+
+        "comparison": [
+            {
+                "name": "Goals",
+                "home": {"value": 3, "evolution": "↑"},
+                "away": {"value": 1, "evolution": "↘"}
+            },
+            {
+                "name": "Shots",
+                "home": {"value": 16, "evolution": "↗"},
+                "away": {"value": 9, "evolution": "↓"}
+            },
+            {
+                "name": "Corners",
+                "home": {"value": 7, "evolution": "↗"},
+                "away": {"value": 3, "evolution": "↘"}
+            }
+        ]
+    }
+
+    return render_template(
+        "fixture.html",
+        fixture=fixture
     )

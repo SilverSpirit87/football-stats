@@ -6,7 +6,16 @@
     <script src="{{ url_for('static', filename='js/team.js') }}" defer></script>
 {% endblock %}
 
-{% block heading %}{{ team.name }}{% endblock %}
+{% block heading %}
+    <span class="entity-heading">
+        <img
+            class="entity-image"
+            src="{{ team.logo }}"
+            alt="{{ team.name }} logo"
+        >
+        <span>{{ team.name }}</span>
+    </span>
+{% endblock %}
 
 
 {% macro render_statistics(statistics) %}

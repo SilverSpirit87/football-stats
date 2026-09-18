@@ -6,7 +6,16 @@
     <script src="{{ url_for('static', filename='js/country.js') }}" defer></script>
 {% endblock %}
 
-{% block heading %}{{country.name}}{% endblock %}
+{% block heading %}
+    <span class="entity-heading">
+        <img
+            class="entity-image"
+            src="{{ country.flag }}"
+            alt="{{ country.name }} flag"
+        >
+        <span>{{ country.name }}</span>
+    </span>
+{% endblock %}
 
 {% block content %}
     <div class="search-options">

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Football Stats | {{fixture.home_team.name}} vs {{fixture.away_team.name}}{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/fixture.js') }}" defer></script>
+{% endblock %}
+
+{% macro metric_row(metric) %}
+    <div class="unique-metric">
+        <span class="home-metric-value">{{metric.home.value}}</span>
+        <span class="home-metric-evolution">{{metric.home.evolution}}</span>
+
+        <span class="metric-name">{{metric.name}}</span>
+
+        <span class="away-metric-evolution">{{metric.away.evolution}}</span>
+        <span class="away-metric-value">{{metric.away.value}}</span>
+    </div>
+{% endmacro %}
+
+{% macro statistics_component(statistics) %}
+    <div class="fixture-statistics-list">
+        {% for metric in statistics %}
+            {{ metric_row(metric) }}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% block heading %}
+    <span class="fixture-heading">
+        <span class="fixture-team">
+            <img
+                class="entity-image"
+                src="{{ fixture.home_team.logo }}"
+                alt="{{ fixture.home_team.name }} logo"
+            >
+            <span>{{ fixture.home_team.name }}</span>
+        </span>
+
+        <span class="fixture-versus">vs</span>
+
+        <span class="fixture-team">
+            <span>{{ fixture.away_team.name }}</span>
+            <img
+                class="entity-image"
+                src="{{ fixture.away_team.logo }}"
+                alt="{{ fixture.away_team.name }} logo"
+            >
+        </span>
+    </span>
+{% endblock %}
+
+{% block content %}
+
+    <div class="fixture-info">
+        <span>{{ fixture.competition.name }}</span>
+        <span>{{ fixture.stage.name }}</span>
+        <span>{{ fixture.date }}</span>
+        <span>{{ fixture.time }}</span>
+    </div>
+
+    <div class="fixture-status">
+        <span>{{ fixture.status }}</span>
+    </div>
+
+    <div class="search-panel">
+        <div class="statistics-mode-toggle">
+            <span class="mode-label active" data-mode="role">Role</span>
+
+            <input
+                type="checkbox"
+                id="statistics-mode-toggle"
+                aria-label="Switch between Role and Overall statistics"
+            >
+
+            <span class="mode-label" data-mode="overall">Overall</span>
+        </div>
+
+        <input
+            type="text"
+            id="metric-search"
+            placeholder="Search..."
+            aria-label="Search metrics"
+        >
+    </div>
+
+    <div class="fixture-tabs">
+        <button class="fixture-tab active" data-view="pre-match">
+            Pre-Match
+        </button>
+
+        <button class="fixture-tab" data-view="match">
+            Match
+        </button>
+
+        <button class="fixture-tab" data-view="comparison">
+            Comparison
+        </button>
+    </div>
+
+    <div class="fixture-view" id="pre-match-view">
+        <div id="role-statistics">
+            {{ statistics_component(fixture.pre_match.role) }}
+        </div>
+
+        <div id="overall-statistics" hidden>
+            {{ statistics_component(fixture.pre_match.overall) }}
+        </div>
+    </div>
+
+    <div class="fixture-view" id="match-view" hidden>
+        {{ statistics_component(fixture.match) }}
+    </div>
+
+    <div class="fixture-view" id="comparison-view" hidden>
+        {{ statistics_component(fixture.comparison) }}
+    </div>
+
+{% endblock %}
